@@ -51,6 +51,9 @@ public class JDBC {
 				if (conn != null) {
 					conn.close();
 				}
+				if (stmt != null) {
+					stmt.close();
+				}
 			} catch (SQLException se) {
 				se.printStackTrace();
 			}
@@ -58,9 +61,12 @@ public class JDBC {
 	}
 
 	public void create() {
+		Connection conn = null;
+		Statement statement = null;
+
 		try {
-			Connection conn = DriverManager.getConnection(jdbcConnectionURL, username, password);
-			Statement statement = conn.createStatement();
+			conn = DriverManager.getConnection(jdbcConnectionURL, username, password);
+			statement = conn.createStatement();
 
 			statement.executeUpdate("INSERT INTO customer(name, address, email, password)"
 					+ " VALUES('Bob', 'MyStreet', 'someemail22@mail.com', 'bluepass')");
@@ -70,14 +76,29 @@ public class JDBC {
 
 		} catch (SQLException e) {
 			e.printStackTrace();
+		} finally {
+			try {
+				if (conn != null) {
+					conn.close();
+				}
+				if (statement != null) {
+					statement.close();
+				}
+			} catch (SQLException se) {
+				se.printStackTrace();
+			}
 		}
 	}
 
 	public void readCustomer(int id) {
+		Connection conn = null;
+		Statement statement = null;
+		ResultSet rs = null;
+
 		try {
-			Connection conn = DriverManager.getConnection(jdbcConnectionURL, username, password);
-			Statement statement = conn.createStatement();
-			ResultSet rs = statement.executeQuery("SELECT * FROM customer WHERE customer_id = " + id);
+			conn = DriverManager.getConnection(jdbcConnectionURL, username, password);
+			statement = conn.createStatement();
+			rs = statement.executeQuery("SELECT * FROM customer WHERE customer_id = " + id);
 
 			rs.next();
 			String name = rs.getString("name");
@@ -87,17 +108,34 @@ public class JDBC {
 			// Display values
 			System.out.println("Fetching information...");
 			System.out.println("ID = " + id + "\nName = " + name + "\nEmail = " + email + "\nPassword = " + password);
-
 		} catch (SQLException e) {
 			e.printStackTrace();
+		} finally {
+			try {
+				if (conn != null) {
+					conn.close();
+				}
+				if (statement != null) {
+					statement.close();
+				}
+				if (rs != null) {
+					rs.close();
+				}
+			} catch (SQLException se) {
+				se.printStackTrace();
+			}
 		}
 	}
 
 	public void readAllCustomers() {
+		Connection conn = null;
+		Statement statement = null;
+		ResultSet rs = null;
+
 		try {
-			Connection conn = DriverManager.getConnection(jdbcConnectionURL, username, password);
-			Statement statement = conn.createStatement();
-			ResultSet rs = statement.executeQuery("SELECT * FROM customer");
+			conn = DriverManager.getConnection(jdbcConnectionURL, username, password);
+			statement = conn.createStatement();
+			rs = statement.executeQuery("SELECT * FROM customer");
 
 			// Extract data from result set
 			while (rs.next()) {
@@ -109,16 +147,32 @@ public class JDBC {
 				System.out.println("Fetching information...");
 				System.out.println("ID = " + id + "\nName = " + name + "\nEmail = " + email);
 			}
-
 		} catch (SQLException e) {
 			e.printStackTrace();
+		} finally {
+			try {
+				if (conn != null) {
+					conn.close();
+				}
+				if (statement != null) {
+					statement.close();
+				}
+				if (rs != null) {
+					rs.close();
+				}
+			} catch (SQLException se) {
+				se.printStackTrace();
+			}
 		}
 	}
 
 	public void updateCustomer(int id, String newPw) {
+		Connection conn = null;
+		Statement statement = null;
+
 		try {
-			Connection conn = DriverManager.getConnection(jdbcConnectionURL, username, password);
-			Statement statement = conn.createStatement();
+			conn = DriverManager.getConnection(jdbcConnectionURL, username, password);
+			statement = conn.createStatement();
 
 			statement.executeUpdate("UPDATE customer SET password = '" + newPw + "' " + "WHERE customer_id = " + id);
 
@@ -126,18 +180,42 @@ public class JDBC {
 
 		} catch (SQLException e) {
 			e.printStackTrace();
+		} finally {
+			try {
+				if (conn != null) {
+					conn.close();
+				}
+				if (statement != null) {
+					statement.close();
+				}
+			} catch (SQLException se) {
+				se.printStackTrace();
+			}
 		}
 	}
 
 	public void deleteCustomer(int id) {
+		Connection conn = null;
+		Statement statement = null;
+
 		try {
-			Connection conn = DriverManager.getConnection(jdbcConnectionURL, username, password);
-			Statement statement = conn.createStatement();
+			conn = DriverManager.getConnection(jdbcConnectionURL, username, password);
+			statement = conn.createStatement();
 
 			statement.executeUpdate("DELETE FROM customer WHERE customer_id = " + id);
-
 		} catch (SQLException e) {
 			e.printStackTrace();
+		} finally {
+			try {
+				if (conn != null) {
+					conn.close();
+				}
+				if (statement != null) {
+					statement.close();
+				}
+			} catch (SQLException se) {
+				se.printStackTrace();
+			}
 		}
 	}
 }
